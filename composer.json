@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "laravel/vending-machine-backend",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Simulates a vending machine backend with coin and product operations.",
     "keywords": [
         "laravel",
         "framework"
@@ -26,6 +26,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "VendingMachine\\": "src/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
