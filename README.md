@@ -1,81 +1,95 @@
-# Laravel Example
-
-A modern Laravel starter template to kick off your next PHP project with best practices, batteries included.
-
-![Laravel](https://img.shields.io/badge/Laravel-12.x-red?style=flat-square)
-![PHP](https://img.shields.io/badge/PHP-8.4%2B-blue?style=flat-square)
-![Docker](https://img.shields.io/badge/Docker-ready-blue?style=flat-square)
-![License](https://img.shields.io/github/license/albertgarcia4/laravel-example?style=flat-square)
+# 🛠️ Vending Machine
 
 ---
 
-## 🚀 Features
-
-- Laravel 12.x, PHP 8.4+
-- Pre-configured Docker containers (PHP, Nginx, MySQL, Redis)
-- Ready-to-use scripts for setup, development, and testing
-- Out-of-the-box support for Vite, Sail, Pint, Pail, and more
-- Opinionated code style and testing tools
-- Custom Docker commands for `artisan` and `composer`
-- Ready-to-use `.env` and SQLite database setup
+## 📖 Description
+This challenge is about modeling a vending machine and the state it must maintain during operation. The machine works as expected: it receives money and dispenses products. The candidate decides how the actions on the machine are managed.
 
 ---
 
-## 🐳 Docker Quick Start
+## 💰 Accepted Coins
+- $0.05
+- $0.10
+- $0.25
+- $1.00
 
-```bash
-# Copy .env and set your environment variables
-cp .env.example .env
+---
 
-# Start containers (from the docker folder)
-docker compose -f docker/docker-compose.yml up -d
+## 🥤 Available Products
+| Product | Price |
+|---------|-------|
+| Water   | $0.65 |
+| Juice   | $1.00 |
+| Soda    | $1.50 |
 
-# Run artisan or composer inside the container
-./docker/commands/artisan.sh migrate
-./docker/commands/composer.sh install
+Each product has a selector, price, and available quantity.
+
+---
+
+## 🔄 Valid Actions
+- Insert coin: $0.05, $0.10, $0.25, $1.00
+- Return Coin: returns all inserted coins
+- GET Water, GET Juice, GET Soda: select product
+- SERVICE: service personnel set available change and product quantities
+
+---
+
+## 📦 Machine Responses
+- $0.05, $0.10, $0.25: coin return
+- Water, Juice, Soda: dispense product
+
+---
+
+## 🗃️ State Tracking
+- Available products: quantity, price, and selector
+- Available change: number of coins
+- Currently inserted money
+
+---
+
+## 🧑‍💻 Usage Examples
+
+**1. Buy Soda with exact change**
+```
+1, 0.25, 0.25, GET-SODA -> SODA
+```
+
+**2. Return coins before purchase**
+```
+0.10, 0.10, RETURN-COIN -> 0.10, 0.10
+```
+
+**3. Buy Water without exact change**
+```
+1, GET-WATER -> WATER, 0.25, 0.10
 ```
 
 ---
 
-## 🛠️ Local Development (No Docker)
+## ⚙️ Technical Considerations
+- Language: PHP
+- Solution with Dockerfile or docker-compose is highly appreciated
+- Adding tests is a plus
 
-```bash
-git clone https://github.com/albertgarcia4/laravel-example.git my-app
-cd my-app
+---
 
-# Setup project (composer, npm, env, key, migrate, build)
-composer run setup
+## 🚀 How to Run
 
-# Start local development (PHP server, queue, logs, Vite)
-composer run dev
+### Using Docker Compose
+```
+docker compose build --no-cache
+docker compose up -d
+```
+
+### Laravel setUp
+```
+./docker/commands/composer install
+./docker/commands/artisan migrate
 ```
 
 ---
 
-## 🧩 Scripts
-
-- `composer run setup` — Full project bootstrap
-- `composer run dev` — Start all dev services concurrently
-- `composer run test` — Run tests
-
----
-
-## 📝 Customization
-
-- Update `composer.json` for dependencies and scripts
-- Edit `.env` for environment variables
-- Add your own packages via Composer or NPM
-- Tweak Docker configuration in `docker/`
-
----
-
-## 🤝 Contributing
-
-Feel free to fork, open issues, or submit PRs to improve this template!
-
----
-
-## 📄 License
-
-This project is open-sourced under the [MIT license](LICENSE).
-
+## 📋 Requirements
+- PHP >= 8.0
+- Composer
+- Docker (optional)
