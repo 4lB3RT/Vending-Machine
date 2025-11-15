@@ -4,13 +4,17 @@ declare(strict_types = 1);
 
 namespace VendingMachine\Shared\Domain;
 
-use Webmozart\Assert\Assert;
+use VendingMachine\Shared\Domain\Errors\InvalidCollectionType;
+use VendingMachine\Shared\Domain\Validators\Collection as Validator;
 
 abstract class Collection
 {
-    public function __construct(protected array $items)
-    {
-        Assert::allIsInstanceOf($items, $this->type());
+    /* @throws InvalidCollectionType */
+    public function __construct(
+        private readonly Validator $validator,
+        protected array            $items
+    ) {
+        $this->validator->isValid($items, $this->type());
     }
 
     abstract protected function type(): string;
