@@ -1,0 +1,27 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Ejecutando pre-commit en Vending Machine..."
+
+# Ejecutar PHP CS Fixer y corregir archivos
+echo "Corriendo PHP CS Fixer..."
+composer cs-fix
+echo "PHP CS Fixer completado."
+
+# Ejecutar PHPStan para análisis estático
+echo "Corriendo PHPStan..."
+composer phpstan
+echo "PHPStan completado."
+
+# Mensaje de éxito estilizado
+GREEN='\033[0;32m'
+NC='\033[0m' # Sin color
+echo "${GREEN}"
+echo "  _____ _    _  ____ ____ ____ ____ ____ "
+echo " / ___| |  | |/ ___/ ___/ ___/ ___/ ___|"
+echo "| |   | |  | | |  | |  | |  | |  | |    "
+echo "| |___| |__| | |__| |__| |__| |__| |___ "
+echo " \____|\____/ \____\____\____\____\____|"
+echo ""
+echo "        ¡SUCCESS! Commit listo.        "
+echo "${NC}"
