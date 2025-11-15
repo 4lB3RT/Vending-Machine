@@ -6,12 +6,32 @@ echo "Ejecutando pre-commit en Vending Machine..."
 # Ejecutar PHP CS Fixer y corregir archivos
 echo "Corriendo PHP CS Fixer..."
 composer cs-fix
+if [ $? -ne 0 ]; then
+  echo "PHP CS Fixer falló. Abortando commit."
+  exit 1
+fi
+
 echo "PHP CS Fixer completado."
 
 # Ejecutar PHPStan para análisis estático
 echo "Corriendo PHPStan..."
 composer phpstan
+if [ $? -ne 0 ]; then
+  echo "PHPStan falló. Abortando commit."
+  exit 1
+fi
+
 echo "PHPStan completado."
+
+# Ejecutar tests unitarios
+echo "Ejecutando tests unitarios..."
+composer test:unit
+if [ $? -ne 0 ]; then
+  echo "Tests unitarios fallaron. Abortando commit."
+  exit 1
+fi
+
+echo "Tests unitarios completados."
 
 # Mensaje de éxito estilizado
 GREEN='\033[0;32m'
