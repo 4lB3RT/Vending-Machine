@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace VendingMachine\Shared\infrastructure\Http\Api\Services;
 
 use Symfony\Component\HttpFoundation\Response;
-use VendingMachine\Shared\Domain\Errors\BadRequest;
-use VendingMachine\Shared\Domain\Errors\EntityNotFound;
-use VendingMachine\Shared\Domain\Errors\Forbidden;
-use VendingMachine\Shared\Domain\Errors\Unauthorized;
+use VendingMachine\Shared\Domain\Errors\Essentials\BadRequest;
+use VendingMachine\Shared\Domain\Errors\Essentials\EntityNotFound;
+use VendingMachine\Shared\Domain\Errors\Essentials\Forbidden;
+use VendingMachine\Shared\Domain\Errors\Essentials\Unauthorized;
 
 final class JsonResponse
 {

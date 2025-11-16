@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace VendingMachine\Product\Domain\Errors;
 
-use VendingMachine\Shared\Domain\Errors\BadRequest;
+use VendingMachine\Shared\Domain\Errors\Essentials\BadRequest;
 
 final class PriceCannotBeNegative extends BadRequest
 {
