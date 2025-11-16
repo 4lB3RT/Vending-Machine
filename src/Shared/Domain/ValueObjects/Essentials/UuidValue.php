@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace VendingMachine\Shared\Domain\ValueObjects;
+namespace VendingMachine\Shared\Domain\ValueObjects\Essentials;
 
 use VendingMachine\Shared\Domain\Errors\InvalidUuid;
 use VendingMachine\Shared\Domain\Validators\UuidValue as Validator;

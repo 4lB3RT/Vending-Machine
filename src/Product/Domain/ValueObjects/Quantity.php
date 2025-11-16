@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace VendingMachine\Product\Domain\ValueObjects;
 
 use VendingMachine\Product\Domain\Errors\QuantityCannotBeNegative;
-use VendingMachine\Shared\Domain\ValueObjects\IntegerValue;
+use VendingMachine\Shared\Domain\ValueObjects\Essentials\IntegerValue;
 
 final readonly class Quantity extends IntegerValue
 {

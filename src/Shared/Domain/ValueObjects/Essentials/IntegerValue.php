@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace VendingMachine\Shared\Domain\ValueObjects;
+namespace VendingMachine\Shared\Domain\ValueObjects\Essentials;
 
 abstract readonly class IntegerValue
 {

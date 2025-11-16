@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace VendingMachine\Product\Domain\ValueObjects;
 
 use VendingMachine\Product\Domain\Errors\PriceCannotBeNegative;
-use VendingMachine\Shared\Domain\ValueObjects\FloatValue;
+use VendingMachine\Shared\Domain\ValueObjects\Essentials\FloatValue;
 
 final readonly class Price extends FloatValue
 {

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace VendingMachine\Product\Domain\ValueObjects;
 
-use VendingMachine\Shared\Domain\ValueObjects\StringValue;
+use VendingMachine\Shared\Domain\ValueObjects\Essentials\StringValue;
 
 final readonly class Name extends StringValue
 {
