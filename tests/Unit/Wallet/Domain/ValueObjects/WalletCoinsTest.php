@@ -5,14 +5,15 @@ declare(strict_types = 1);
 namespace Tests\Unit\Wallet\Domain\ValueObjects;
 
 use PHPUnit\Framework\TestCase;
-use VendingMachine\Wallet\Domain\Errors\CoinsCannotBeNegative;
-use VendingMachine\Wallet\Domain\ValueObjects\Coins;
+use VendingMachine\Shared\Domain\Errors\CoinsCannotBeNegative;
+use VendingMachine\Shared\Domain\ValueObjects\Coins;
+use VendingMachine\Wallet\Domain\ValueObjects\WalletCoins;
 
-final class CoinsTest extends TestCase
+final class WalletCoinsTest extends TestCase
 {
     public function testCreatesCoinsWithPositiveValue(): void
     {
-        $coins = Coins::fromFloat(5.5);
+        $coins = WalletCoins::fromFloat(5.5);
         $this->assertInstanceOf(Coins::class, $coins);
         $this->assertEquals(5.5, $coins->value());
     }
@@ -20,6 +21,6 @@ final class CoinsTest extends TestCase
     public function testThrowsExceptionForNegativeCoins(): void
     {
         $this->expectException(CoinsCannotBeNegative::class);
-        Coins::fromFloat(-1.0);
+        WalletCoins::fromFloat(-1.0);
     }
 }

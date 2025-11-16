@@ -2,9 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace VendingMachine\Wallet\Domain\Errors;
-
-use VendingMachine\Shared\Domain\Errors\BadRequest;
+namespace VendingMachine\Shared\Domain\Errors;
 
 final class CoinsCannotBeNegative extends BadRequest
 {

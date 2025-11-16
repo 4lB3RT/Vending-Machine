@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace VendingMachine\Wallet\Domain\Entities;
 
-use VendingMachine\Wallet\Domain\ValueObjects\Coins;
+use VendingMachine\Wallet\Domain\ValueObjects\WalletCoins;
 use VendingMachine\Wallet\Domain\ValueObjects\WalletId;
 
 final readonly class Wallet
 {
     public function __construct(
         private WalletId $id,
-        private Coins $coins
+        private WalletCoins $coins
     ) {
     }
 
@@ -20,7 +20,7 @@ final readonly class Wallet
         return $this->id;
     }
 
-    public function coins(): Coins
+    public function coins(): WalletCoins
     {
         return $this->coins;
     }
