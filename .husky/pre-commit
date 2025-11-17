@@ -1,47 +1,40 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
 
-echo "Ejecutando pre-commit en Vending Machine..."
+spinner() {
+  local pid=$1
+  local delay=0.1
+  local spinstr='|/-\\'
+  while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
+    local temp=${spinstr#?}
+    printf " [%c] Loading pre-commit checks...  " "$spinstr"
+    spinstr=$temp${spinstr%"$temp"}
+    sleep $delay
+    printf "\r"
+  done
+}
 
-# Ejecutar PHP CS Fixer y corregir archivos
-echo "Corriendo PHP CS Fixer..."
-composer cs-fix
-if [ $? -ne 0 ]; then
-  echo "PHP CS Fixer falló. Abortando commit."
+(
+  composer cs-fix >/dev/null 2>&1 || exit 1
+  composer phpstan >/dev/null 2>&1 || exit 1
+  composer test:unit >/dev/null 2>&1 || exit 1
+  if [ -f "docker/commands/test-integration.sh" ]; then
+    sh docker/commands/test-integration.sh >/dev/null 2>&1 || exit 1
+  fi
+) &
+pid=$!
+spinner $pid
+wait $pid
+result=$?
+
+printf "\r" # Clear spinner line
+
+if [ $result -eq 0 ]; then
+  echo ""
+  echo "  ╔══════════════════════════════════════════════╗"
+  echo "  ║   VENDING MACHINE: Commit successful!       ║"
+  echo "  ║   [🍫][🥤][🍪][🍬][🥨][🍩][🍭][🥛][🍟][🍔]   ║"
+  echo "  ╚══════════════════════════════════════════════╝"
+  echo ""
+else
   exit 1
 fi
-
-echo "PHP CS Fixer completado."
-
-# Ejecutar PHPStan para análisis estático
-echo "Corriendo PHPStan..."
-composer phpstan
-if [ $? -ne 0 ]; then
-  echo "PHPStan falló. Abortando commit."
-  exit 1
-fi
-
-echo "PHPStan completado."
-
-# Ejecutar tests unitarios
-echo "Ejecutando tests unitarios..."
-composer test:unit
-if [ $? -ne 0 ]; then
-  echo "Tests unitarios fallaron. Abortando commit."
-  exit 1
-fi
-
-echo "Tests unitarios completados."
-
-# Mensaje de éxito estilizado
-GREEN='\033[0;32m'
-NC='\033[0m' # Sin color
-echo "${GREEN}"
-echo "  _____ _    _  ____ ____ ____ ____ ____ "
-echo " / ___| |  | |/ ___/ ___/ ___/ ___/ ___|"
-echo "| |   | |  | | |  | |  | |  | |  | |    "
-echo "| |___| |__| | |__| |__| |__| |__| |___ "
-echo " \____|\____/ \____\____\____\____\____|"
-echo ""
-echo "        ¡SUCCESS! Commit listo.        "
-echo "${NC}"
