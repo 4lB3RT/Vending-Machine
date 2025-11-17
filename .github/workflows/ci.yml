@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  workflow_dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build PHP image
+        run: docker build -t vending-machine-php:latest docker/php
+      - name: Clean up Docker environment
+        run: |
+          docker rm -f mysql_vending_machine_test || true
+          docker rm -f php_vending_machine_test || true
+          docker network rm vending_machine_test || true
+      - name: Create Docker network
+        run: docker network create vending_machine_test
+      - name: Start MySQL
+        run: |
+          docker run -d --name mysql_vending_machine_test --network vending_machine_test \
+            -e MYSQL_DATABASE=vending_machine_test \
+            -e MYSQL_USER=testuser \
+            -e MYSQL_PASSWORD=testpass \
+            -e MYSQL_ROOT_PASSWORD=testpass \
+            mariadb:latest --default-authentication-plugin=mysql_native_password
+      - name: Start PHP
+        run: |
+          docker run -d --name php_vending_machine_test --network vending_machine_test \
+            -v ${{ github.workspace }}:/code \
+            -w /code \
+            vending-machine-php:latest tail -f /dev/null
+      - name: Install Composer dependencies
+        run: docker exec php_vending_machine_test composer install --prefer-dist --no-progress --no-suggest
+      - name: Run PHP CS Fixer
+        run: docker exec php_vending_machine_test vendor/bin/php-cs-fixer fix --dry-run --diff
+      - name: Run migrations
+        run: docker exec php_vending_machine_test php artisan migrate --env=testing
+      - name: Run integration tests
+        run: docker exec php_vending_machine_test composer test:integration

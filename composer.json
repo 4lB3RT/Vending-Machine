@@ -58,6 +58,11 @@
         ],
         "test:unit": "vendor/bin/phpunit --testsuite=Unit",
         "test:integration": "vendor/bin/phpunit --testsuite=integration",
+        "test:all": [
+            "php artisan migrate --env=testing",
+            "composer test:unit",
+            "composer test:integration"
+        ],
         "cs-fix": "php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes",
         "phpstan": "./vendor/bin/phpstan analyse --configuration=phpstan.neon",
         "post-autoload-dump": [

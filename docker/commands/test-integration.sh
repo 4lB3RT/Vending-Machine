@@ -42,5 +42,10 @@ docker run -d --name "$PHP_HOST" --network "$NETWORK" \
   -w /code \
   vending-machine-php:latest tail -f /dev/null
 
-docker exec -it "$PHP_HOST" php artisan migrate --env=testing
-docker exec -it "$PHP_HOST" composer test:integration
+DOCKER_EXEC_FLAGS=""
+if [ "$CI" = "true" ]; then
+  DOCKER_EXEC_FLAGS="-it"
+fi
+
+docker exec $DOCKER_EXEC_FLAGS "$PHP_HOST" php artisan migrate --env=testing
+docker exec $DOCKER_EXEC_FLAGS "$PHP_HOST" composer test:integration
