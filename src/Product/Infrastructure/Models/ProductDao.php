@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace VendingMachine\Product\Infrastructure\Models;
 
+use Database\Factories\ProductDaoFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -21,4 +22,9 @@ final class ProductDao extends Model
     protected $fillable   = [
         'id', 'name', 'price', 'quantity',
     ];
+
+    public static function factory(): ProductDaoFactory
+    {
+        return new ProductDaoFactory();
+    }
 }
