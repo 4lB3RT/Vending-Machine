@@ -2,21 +2,31 @@
 
 declare(strict_types = 1);
 
-namespace VendingMachine\Product\Domain\Repositories;
+namespace VendingMachine\Product\Application\GetProducts;
 
-use VendingMachine\Product\Domain\Collections\ProductCollection;
 use VendingMachine\Product\Domain\Errors\PriceCannotBeNegative;
 use VendingMachine\Product\Domain\Errors\QuantityCannotBeNegative;
+use VendingMachine\Product\Domain\Repositories\ProductRepository;
 use VendingMachine\Shared\Domain\Errors\InvalidCollectionType;
 use VendingMachine\Shared\Domain\Errors\InvalidUuid;
 
-interface ProductRepository
+final readonly class GetProducts
 {
+    public function __construct(
+        private ProductRepository $productRepository
+    ) {
+    }
+
     /**
      * @throws InvalidCollectionType
      * @throws PriceCannotBeNegative
      * @throws QuantityCannotBeNegative
      * @throws InvalidUuid
      */
-    public function get(): ProductCollection;
+    public function execute(): GetProductResponse
+    {
+        $products = $this->productRepository->get();
+
+        return new GetProductResponse($products);
+    }
 }
