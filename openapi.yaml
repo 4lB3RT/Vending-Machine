@@ -1,0 +1,10 @@
+openapi: 3.0.3
+info:
+  title: Vending Machine API
+  version: 1.0.0
+servers:
+  - url: http://localhost/api
+
+paths:
+  /products:
+    $ref: './docs/products/paths/getProducts.yaml'

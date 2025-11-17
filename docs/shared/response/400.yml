@@ -1,0 +1,10 @@
+description: Solicitud incorrecta
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/400.yml#/ErrorResponse'
+    examples:
+      badRequest:
+        value:
+          code: 400
+          message: "Bad request"

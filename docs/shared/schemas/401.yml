@@ -1,0 +1,13 @@
+ErrorResponse:
+  type: object
+  required:
+    - code
+    - message
+  properties:
+    code:
+      type: integer
+      example: 401
+    message:
+      type: string
+      example: "Unauthorized"
+

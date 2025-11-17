@@ -1,0 +1,11 @@
+description: Prohibido
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/403.yml#/ErrorResponse'
+    examples:
+      forbidden:
+        value:
+          code: 403
+          message: "Forbidden"
+
