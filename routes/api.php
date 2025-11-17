@@ -1,7 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+declare(strict_types=1);
 
-Route::get('/', function () {
-    return view('welcome');
+use Illuminate\Support\Facades\Route;
+use VendingMachine\Product\Infrastructure\Http\Api\Controllers\GetProductsController;
+
+Route::group(['prefix' => 'products'], function () {
+    Route::get('/', [GetProductsController::class, '__invoke']);
 });

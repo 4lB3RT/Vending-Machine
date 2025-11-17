@@ -38,4 +38,14 @@ final readonly class Product
     {
         return $this->id;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id'       => $this->id->value(),
+            'name'     => $this->name->value(),
+            'price'    => $this->price->value(),
+            'quantity' => $this->quantity->value(),
+        ];
+    }
 }
