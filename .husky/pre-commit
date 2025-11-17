@@ -1,40 +1,32 @@
 #!/bin/sh
 
-spinner() {
-  local pid=$1
-  local delay=0.1
-  local spinstr='|/-\\'
-  while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
-    local temp=${spinstr#?}
-    printf " [%c] Loading pre-commit checks...  " "$spinstr"
-    spinstr=$temp${spinstr%"$temp"}
-    sleep $delay
-    printf "\r"
-  done
-}
+composer cs-fix >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+  exit 1
+fi
 
-(
-  composer cs-fix >/dev/null 2>&1 || exit 1
-  composer phpstan >/dev/null 2>&1 || exit 1
-  composer test:unit >/dev/null 2>&1 || exit 1
-  if [ -f "docker/commands/test-integration.sh" ]; then
-    sh docker/commands/test-integration.sh >/dev/null 2>&1 || exit 1
+composer phpstan >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+
+composer test:unit >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+
+if [ -f "docker/commands/test-integration.sh" ]; then
+  sh docker/commands/test-integration.sh >/dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    exit 1
   fi
-) &
-pid=$!
-spinner $pid
-wait $pid
-result=$?
+fi
 
-printf "\r" # Clear spinner line
-
-if [ $result -eq 0 ]; then
+if [ $? -eq 0 ]; then
   echo ""
   echo "  ╔══════════════════════════════════════════════╗"
   echo "  ║   VENDING MACHINE: Commit successful!       ║"
   echo "  ║   [🍫][🥤][🍪][🍬][🥨][🍩][🍭][🥛][🍟][🍔]   ║"
   echo "  ╚══════════════════════════════════════════════╝"
   echo ""
-else
-  exit 1
 fi
