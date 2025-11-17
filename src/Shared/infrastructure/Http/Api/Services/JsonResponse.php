@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace VendingMachine\Shared\infrastructure\Http\Api\Services;
 
+use Illuminate\Http\JsonResponse as LaravelJsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use VendingMachine\Shared\Domain\Errors\Essentials\BadRequest;
 use VendingMachine\Shared\Domain\Errors\Essentials\EntityNotFound;
@@ -12,19 +13,19 @@ use VendingMachine\Shared\Domain\Errors\Essentials\Unauthorized;
 
 final class JsonResponse
 {
-    public static function successResponseWithData(array $data = []): string
+    public static function successResponseWithData(array $data = []): LaravelJsonResponse
     {
-        return json_encode([
+        return new LaravelJsonResponse([
             'status' => Response::HTTP_OK,
             'data'   => $data,
-        ]);
+        ], Response::HTTP_OK);
     }
 
-    public static function successResponse(): string
+    public static function successResponse(): LaravelJsonResponse
     {
-        return json_encode([
+        return new LaravelJsonResponse([
             'status' => Response::HTTP_OK,
-        ]);
+        ], Response::HTTP_OK);
     }
 
     public static function build(\Throwable $e): string
