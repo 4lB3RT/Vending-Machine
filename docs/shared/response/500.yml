@@ -1,0 +1,11 @@
+description: Error interno del servidor
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/500.yml#/ErrorResponse'
+    examples:
+      internalServerError:
+        value:
+          code: 500
+          message: "Internal server error"
+

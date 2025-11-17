@@ -1,0 +1,11 @@
+description: No autorizado
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/401.yml#/ErrorResponse'
+    examples:
+      unauthorized:
+        value:
+          code: 401
+          message: "Unauthorized"
+

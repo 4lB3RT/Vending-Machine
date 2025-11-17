@@ -1,0 +1,27 @@
+get:
+  summary: Obtener la lista de productos
+  tags:
+    - Products
+  operationId: getProducts
+  responses:
+    '200':
+      description: Lista de productos obtenida correctamente
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/getProducts.yaml#/GetProductsResponse'
+          examples:
+            success:
+              value:
+                status: 200
+                products:
+                  - id: "123e4567-e89b-12d3-a456-426614174000"
+                    name: "CocaCola"
+                    price: 1.5
+                    quantity: 10
+    '400':
+      $ref: '../../shared/response/400.yml'
+    '404':
+      $ref: '../../shared/response/404.yml'
+    '500':
+      $ref: '../../shared/response/500.yml'

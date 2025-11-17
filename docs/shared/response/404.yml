@@ -1,0 +1,11 @@
+description: No encontrado
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/404.yml#/ErrorResponse'
+    examples:
+      notFound:
+        value:
+          code: 404
+          message: "Not found"
+
