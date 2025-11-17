@@ -7,7 +7,6 @@ namespace Tests\Unit\Order\Domain\Entities;
 use Tests\Unit\Order\Domain\ValueObjects\OrderCoinsMother;
 use Tests\Unit\Order\Domain\ValueObjects\OrderIdMother;
 use Tests\Unit\Product\Domain\Entities\ProductMother;
-use Tests\Unit\Shared\Domain\Validators\TestCollection;
 use Tests\Unit\Wallet\Domain\Entities\WalletMother;
 use VendingMachine\Order\Entities\Order;
 use VendingMachine\Order\ValueObjects\OrderCoins;
@@ -23,11 +22,10 @@ final class OrderMother
         ?Wallet $wallet = null,
         ?OrderCoins $coins = null
     ): Order {
-        $validator  = new TestCollection();
         $productOne = ProductMother::create();
         $productTwo = ProductMother::create();
 
-        $products = $products ?? new ProductCollection($validator, [$productOne, $productTwo]);
+        $products = $products ?? new ProductCollection([$productOne, $productTwo]);
 
         return new Order(
             $id ?? OrderIdMother::create(),
