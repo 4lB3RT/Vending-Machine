@@ -13,19 +13,18 @@ use VendingMachine\Shared\Domain\Errors\Essentials\Unauthorized;
 
 final class JsonResponse
 {
-    public static function successResponseWithData(array $data = []): LaravelJsonResponse
-    {
-        return new LaravelJsonResponse([
-            'status' => Response::HTTP_OK,
-            'data'   => $data,
-        ], Response::HTTP_OK);
-    }
-
     public static function successResponse(): LaravelJsonResponse
     {
         return new LaravelJsonResponse([
             'status' => Response::HTTP_OK,
         ], Response::HTTP_OK);
+    }
+
+    public static function successResponseWithContent(array $content = []): LaravelJsonResponse
+    {
+        return new LaravelJsonResponse(array_merge([
+            'status' => Response::HTTP_OK,
+        ], $content), Response::HTTP_OK);
     }
 
     public static function build(\Throwable $e): string
