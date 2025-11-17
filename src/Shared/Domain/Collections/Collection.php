@@ -23,6 +23,11 @@ abstract class Collection
 
     abstract protected function type(): string;
 
+    public function map(callable $callback): array
+    {
+        return array_map($callback, $this->items());
+    }
+
     public function items(): array
     {
         return $this->items;
