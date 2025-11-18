@@ -1,0 +1,13 @@
+UpdateWalletRequest:
+  type: object
+  required:
+    - name
+    - coins
+  properties:
+    name:
+      type: string
+      example: "UpdatedWallet"
+    coins:
+      type: integer
+      example: 20
+

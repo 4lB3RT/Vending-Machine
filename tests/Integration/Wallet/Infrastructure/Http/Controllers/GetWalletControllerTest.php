@@ -13,11 +13,9 @@ class GetWalletControllerTest extends TestCase
     {
         $walletId   = '123e4567-e89b-12d3-a456-426614174000';
         $walletData = json_encode([
-            [
-                'id'    => $walletId,
-                'name'  => 'TestWallet',
-                'coins' => 10,
-            ],
+            'id'    => $walletId,
+            'name'  => 'TestWallet',
+            'coins' => 10,
         ]);
         Redis::command('set', ['wallet:' . $walletId, $walletData]);
 

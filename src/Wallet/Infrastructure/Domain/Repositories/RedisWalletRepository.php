@@ -35,8 +35,19 @@ final readonly class RedisWalletRepository implements WalletRepository
             throw WalletNotFound::create($id->value());
         }
 
-        $walletArray = json_decode($data, true)[0];
+        $walletArray = json_decode($data, true);
 
-        return new Wallet(new WalletId($this->uuidValidator, $walletArray['id']), Name::fromString($walletArray['name']), WalletCoins::fromFloat($walletArray['coins']));
+        return new Wallet(
+            new WalletId($this->uuidValidator, $walletArray['id']),
+            Name::fromString($walletArray['name']),
+            WalletCoins::fromFloat($walletArray['coins'])
+        );
+    }
+
+    public function save(Wallet $wallet): void
+    {
+        $key  = 'wallet:' . $wallet->id()->value();
+        $data = json_encode($wallet->toArray());
+        $this->redis->command('SET', [$key, $data]);
     }
 }

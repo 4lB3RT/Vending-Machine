@@ -8,10 +8,10 @@ use VendingMachine\Wallet\Domain\ValueObjects\Name;
 use VendingMachine\Wallet\Domain\ValueObjects\WalletCoins;
 use VendingMachine\Wallet\Domain\ValueObjects\WalletId;
 
-final readonly class Wallet
+final class Wallet
 {
     public function __construct(
-        private WalletId $id,
+        private readonly WalletId $id,
         private Name $name,
         private WalletCoins $coins
     ) {
@@ -39,5 +39,15 @@ final readonly class Wallet
             'name'  => $this->name->value(),
             'coins' => $this->coins->value(),
         ];
+    }
+
+    public function updateCoins(WalletCoins $coins): void
+    {
+        $this->coins = $coins;
+    }
+
+    public function updateName(Name $name): void
+    {
+        $this->name = $name;
     }
 }
