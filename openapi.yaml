@@ -9,4 +9,7 @@ paths:
   /products:
     $ref: './docs/products/paths/getProducts.yaml'
   /wallets/{id}:
-    $ref: './docs/wallet/paths/getWallet.yaml'
+    get:
+      $ref: './docs/wallet/paths/getWallet.yaml'
+    put:
+      $ref: './docs/wallet/paths/updateWallet.yaml'

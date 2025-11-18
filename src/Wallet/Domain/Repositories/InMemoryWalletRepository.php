@@ -26,4 +26,9 @@ class InMemoryWalletRepository implements WalletRepository
 
         return $this->wallets[$id->value()];
     }
+
+    public function save(Wallet $wallet): void
+    {
+        $this->wallets[$wallet->id()->value()] = $wallet;
+    }
 }

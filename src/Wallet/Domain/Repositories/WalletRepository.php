@@ -18,4 +18,6 @@ interface WalletRepository
      * @throws WalletNotFound
      */
     public function findById(WalletId $id): Wallet;
+
+    public function save(Wallet $wallet): void;
 }

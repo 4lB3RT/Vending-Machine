@@ -1,4 +1,4 @@
-get:
+
   summary: Obtener un wallet por ID
   tags:
     - Wallet
@@ -10,7 +10,7 @@ get:
       schema:
         type: string
       description: UUID del wallet
-  responses:
+responses:
     '200':
       description: Wallet obtenido correctamente
       content:
