@@ -7,6 +7,7 @@ namespace VendingMachine\Wallet\Domain\Repositories;
 use VendingMachine\Shared\Domain\Errors\CoinsCannotBeNegative;
 use VendingMachine\Shared\Domain\Errors\InvalidUuid;
 use VendingMachine\Wallet\Domain\Entities\Wallet;
+use VendingMachine\Wallet\Domain\Error\WalletNotFound;
 use VendingMachine\Wallet\Domain\ValueObjects\WalletId;
 
 interface WalletRepository
@@ -14,6 +15,7 @@ interface WalletRepository
     /**
      * @throws InvalidUuid
      * @throws CoinsCannotBeNegative
+     * @throws WalletNotFound
      */
-    public function findById(WalletId $id): ?Wallet;
+    public function findById(WalletId $id): Wallet;
 }

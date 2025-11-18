@@ -6,7 +6,7 @@ namespace VendingMachine\Product\Application\GetProducts;
 
 use VendingMachine\Product\Domain\Collections\ProductCollection;
 
-final readonly class GetProductResponse
+final readonly class GetProductsResponse
 {
     public function __construct(private ProductCollection $products)
     {

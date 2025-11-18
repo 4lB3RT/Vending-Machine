@@ -1,0 +1,33 @@
+get:
+  summary: Obtener un wallet por ID
+  tags:
+    - Wallet
+  operationId: getWallet
+  parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: UUID del wallet
+  responses:
+    '200':
+      description: Wallet obtenido correctamente
+      content:
+        application/json:
+          schema:
+            $ref: '../../wallet/schemas/getWallet.yaml#/GetWalletResponse'
+          examples:
+            success:
+              value:
+                status: 200
+                wallet:
+                  id: "123e4567-e89b-12d3-a456-426614174000"
+                  name: "TestWallet"
+                  coins: 10
+    '400':
+      $ref: '../../shared/response/400.yml'
+    '404':
+      $ref: '../../shared/response/404.yml'
+    '500':
+      $ref: '../../shared/response/500.yml'
