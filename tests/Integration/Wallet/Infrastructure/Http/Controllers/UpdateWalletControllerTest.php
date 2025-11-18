@@ -24,7 +24,7 @@ class UpdateWalletControllerTest extends TestCase
             'coins' => 20,
         ];
 
-        $response = $this->putJson('/api/wallets/' . $walletId . '/update', $updatePayload);
+        $response = $this->putJson('/api/wallets/' . $walletId, $updatePayload);
 
         $response->assertStatus(200);
         $response->assertJsonFragment(['status' => 200]);

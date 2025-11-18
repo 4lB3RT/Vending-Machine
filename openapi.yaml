@@ -13,3 +13,5 @@ paths:
       $ref: './docs/wallet/paths/getWallet.yaml'
     put:
       $ref: './docs/wallet/paths/updateWallet.yaml'
+    post:
+      $ref: './docs/wallet/paths/createWallet.yaml'
