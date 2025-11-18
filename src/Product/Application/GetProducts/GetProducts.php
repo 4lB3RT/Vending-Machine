@@ -23,10 +23,10 @@ final readonly class GetProducts
      * @throws QuantityCannotBeNegative
      * @throws InvalidUuid
      */
-    public function execute(): GetProductResponse
+    public function execute(): GetProductsResponse
     {
         $products = $this->productRepository->get();
 
-        return new GetProductResponse($products);
+        return new GetProductsResponse($products);
     }
 }

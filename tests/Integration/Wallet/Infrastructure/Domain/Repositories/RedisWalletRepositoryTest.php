@@ -9,6 +9,7 @@ use Illuminate\Redis\RedisManager;
 use Tests\TestCase;
 use Tests\Unit\Shared\Domain\Validators\TestUuidValue;
 use VendingMachine\Wallet\Domain\Entities\Wallet;
+use VendingMachine\Wallet\Domain\Error\WalletNotFound;
 use VendingMachine\Wallet\Domain\ValueObjects\WalletId;
 use VendingMachine\Wallet\Infrastructure\Domain\Repositories\RedisWalletRepository;
 
@@ -21,7 +22,7 @@ final class RedisWalletRepositoryTest extends TestCase
     {
         $validator  = new TestUuidValue();
         $walletId   = new WalletId($validator, '123e4567-e89b-12d3-a456-426614174000');
-        $walletData = json_encode([['id' => $walletId->value(), 'coins' => 5]]);
+        $walletData = json_encode([['id' => $walletId->value(), 'name' => 'wallet test' , 'coins' => 5]]);
         $this->redis->command('set', ['wallet:' . $walletId->value(), $walletData]);
 
         $repo   = new RedisWalletRepository($this->redis, $validator);
@@ -37,9 +38,8 @@ final class RedisWalletRepositoryTest extends TestCase
         $validator = new TestUuidValue();
         $walletId  = new WalletId($validator, '123e4567-e89b-12d3-a456-426614174000');
         $repo      = new RedisWalletRepository($this->redis, $validator);
-        $wallet    = $repo->findById($walletId);
-
-        $this->assertNull($wallet);
+        $this->expectException(WalletNotFound::class);
+        $repo->findById($walletId);
     }
 
     protected function setUp(): void

@@ -9,7 +9,9 @@ use VendingMachine\Shared\Domain\Errors\CoinsCannotBeNegative;
 use VendingMachine\Shared\Domain\Errors\InvalidUuid;
 use VendingMachine\Shared\Domain\Validators\UuidValue;
 use VendingMachine\Wallet\Domain\Entities\Wallet;
+use VendingMachine\Wallet\Domain\Error\WalletNotFound;
 use VendingMachine\Wallet\Domain\Repositories\WalletRepository;
+use VendingMachine\Wallet\Domain\ValueObjects\Name;
 use VendingMachine\Wallet\Domain\ValueObjects\WalletCoins;
 use VendingMachine\Wallet\Domain\ValueObjects\WalletId;
 
@@ -22,18 +24,19 @@ final readonly class RedisWalletRepository implements WalletRepository
     /**
      * @throws InvalidUuid
      * @throws CoinsCannotBeNegative
+     * @throws WalletNotFound
      */
-    public function findById(WalletId $id): ?Wallet
+    public function findById(WalletId $id): Wallet
     {
         $key  = 'wallet:' . $id->value();
         $data = $this->redis->command('GET', [$key]);
 
         if (!$data) {
-            return null;
+            throw WalletNotFound::create($id->value());
         }
 
         $walletArray = json_decode($data, true)[0];
 
-        return new Wallet(new WalletId($this->uuidValidator, $walletArray['id']), WalletCoins::fromFloat($walletArray['coins']));
+        return new Wallet(new WalletId($this->uuidValidator, $walletArray['id']), Name::fromString($walletArray['name']), WalletCoins::fromFloat($walletArray['coins']));
     }
 }
