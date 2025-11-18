@@ -22,10 +22,6 @@ docker rm -f "$REDIS_HOST" || true
 docker network rm "$NETWORK" || true
 rm -rf "$MYSQL_VOLUME"
 
-if [ -f "../../.env" ]; then
-  export $(grep -v '^#' ../../.env | xargs)
-fi
-
 # Crear red
 docker network create "$NETWORK" || true
 
@@ -48,13 +44,9 @@ docker run -d --name "$REDIS_HOST" --network "$NETWORK" \
 PROJECT_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 docker run -d --name "$PHP_HOST" --network "$NETWORK" \
   -v "$PROJECT_ROOT":/code \
+  -v "$PROJECT_ROOT/.env.testing":/code/.env \
   -w /code \
   vending-machine-php:latest tail -f /dev/null
-
-# Copiar .env.testing a .env dentro del contenedor PHP
-# Esto asegura que Laravel use la configuración de integración
-
-docker exec "$PHP_HOST" cp /code/.env.testing /code/.env
 
 # Esperar a que MariaDB esté listo usando wait-for-it.sh
 chmod +x ./docker/commands/wait-for-it.sh

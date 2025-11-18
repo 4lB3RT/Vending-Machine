@@ -17,6 +17,7 @@ jobs:
         run: |
           docker rm -f mysql_vending_machine_test || true
           docker rm -f php_vending_machine_test || true
+          docker rm -f redis_vending_machine_test || true
           docker network rm vending_machine_test || true
       - name: Create Docker network
         run: docker network create vending_machine_test
@@ -28,6 +29,10 @@ jobs:
             -e MYSQL_PASSWORD=testpass \
             -e MYSQL_ROOT_PASSWORD=testpass \
             mariadb:latest --default-authentication-plugin=mysql_native_password
+      - name: Start Redis
+        run: |
+          docker run -d --name redis_vending_machine_test --network vending_machine_test \
+            redis:latest
       - name: Start PHP
         run: |
           docker run -d --name php_vending_machine_test --network vending_machine_test \

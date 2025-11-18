@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Integration\Product\Infrastructure\Http\Api\Controllers;
+namespace Tests\Integration\Product\Infrastructure\Http\Api\Controllers;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
