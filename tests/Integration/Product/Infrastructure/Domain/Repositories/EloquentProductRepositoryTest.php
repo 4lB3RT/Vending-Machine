@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Integration\Product\Infrastructure\Domain\Repositories;
+namespace Tests\Integration\Product\Infrastructure\Domain\Repositories;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

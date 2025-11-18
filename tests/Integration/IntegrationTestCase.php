@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Integration;
+namespace Tests\Integration;
 
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
