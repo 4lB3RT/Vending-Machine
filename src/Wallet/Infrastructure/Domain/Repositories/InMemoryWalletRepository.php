@@ -2,10 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace VendingMachine\Wallet\Domain\Repositories;
+namespace VendingMachine\Wallet\Infrastructure\Domain\Repositories;
 
 use VendingMachine\Wallet\Domain\Entities\Wallet;
 use VendingMachine\Wallet\Domain\Error\WalletNotFound;
+use VendingMachine\Wallet\Domain\Repositories\WalletRepository;
 use VendingMachine\Wallet\Domain\ValueObjects\WalletId;
 
 class InMemoryWalletRepository implements WalletRepository

@@ -12,7 +12,7 @@ use VendingMachine\Wallet\Application\GetWallet\GetWallet;
 use VendingMachine\Wallet\Application\GetWallet\GetWalletResponse;
 use VendingMachine\Wallet\Domain\Entities\Wallet;
 use VendingMachine\Wallet\Domain\Error\WalletNotFound;
-use VendingMachine\Wallet\Domain\Repositories\InMemoryWalletRepository;
+use VendingMachine\Wallet\Infrastructure\Domain\Repositories\InMemoryWalletRepository;
 
 class GetWalletTest extends TestCase
 {
