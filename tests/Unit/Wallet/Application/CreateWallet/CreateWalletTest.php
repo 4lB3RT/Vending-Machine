@@ -9,7 +9,7 @@ use Tests\Unit\Shared\Domain\Validators\TestUuidValue;
 use Tests\Unit\Wallet\Domain\ValueObjects\WalletIdMother;
 use VendingMachine\Wallet\Application\CreateWallet\CreateWallet;
 use VendingMachine\Wallet\Application\CreateWallet\CreateWalletRequest;
-use VendingMachine\Wallet\Domain\Repositories\InMemoryWalletRepository;
+use VendingMachine\Wallet\Infrastructure\Domain\Repositories\InMemoryWalletRepository;
 
 final class CreateWalletTest extends TestCase
 {
