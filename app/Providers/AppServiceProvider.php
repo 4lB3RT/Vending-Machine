@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use VendingMachine\Order\Domain\Repositories\OrderRepository;
+use VendingMachine\Order\Infrastructure\Domain\Repositories\RedisOrderRepository;
 use VendingMachine\Product\Domain\Repositories\ProductRepository;
 use VendingMachine\Product\Infrastructure\Domain\Repositories\EloquentProductRepository;
 use VendingMachine\Shared\Domain\Validators\UuidValue;
@@ -30,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             WalletRepository::class,
             RedisWalletRepository::class
+        );
+
+        $this->app->bind(
+            OrderRepository::class,
+            RedisOrderRepository::class
         );
     }
 
