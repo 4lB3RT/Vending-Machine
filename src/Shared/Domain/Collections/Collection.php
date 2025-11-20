@@ -37,4 +37,14 @@ abstract class Collection
     {
         return count($this->items());
     }
+
+    public function ids(): array
+    {
+        $itemsIds = [];
+        foreach ($this->items() as $item) {
+            $itemsIds[] = (int) $item->id()->value();
+        }
+
+        return $itemsIds;
+    }
 }
