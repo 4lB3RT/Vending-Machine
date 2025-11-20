@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace VendingMachine\Product\Domain\Entities;
 
+use VendingMachine\Product\Domain\Errors\ProductOutOfStock;
 use VendingMachine\Product\Domain\ValueObjects\Name;
 use VendingMachine\Product\Domain\ValueObjects\Price;
 use VendingMachine\Product\Domain\ValueObjects\ProductId;
@@ -34,11 +35,6 @@ final readonly class Product
         return $this->quantity;
     }
 
-    public function id(): ProductId
-    {
-        return $this->id;
-    }
-
     public function toArray(): array
     {
         return [
@@ -47,5 +43,22 @@ final readonly class Product
             'price'    => $this->price->value(),
             'quantity' => $this->quantity->value(),
         ];
+    }
+
+    /* @throws ProductOutOfStock */
+    public function assertStockAvailable(int $requestedQuantity): void
+    {
+        if ($requestedQuantity > $this->quantity->value()) {
+            throw ProductOutOfStock::create(
+                $this->id()->value(),
+                $requestedQuantity,
+                $this->quantity->value()
+            );
+        }
+    }
+
+    public function id(): ProductId
+    {
+        return $this->id;
     }
 }
