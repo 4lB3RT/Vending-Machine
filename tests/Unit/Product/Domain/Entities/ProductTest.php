@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Tests\Unit\Product\Domain\Entities;
 
 use PHPUnit\Framework\TestCase;
+use VendingMachine\Product\Domain\Errors\ProductOutOfStock;
 
 final class ProductTest extends TestCase
 {
@@ -38,5 +39,21 @@ final class ProductTest extends TestCase
         ];
 
         $this->assertEquals($expected, $product->toArray());
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     * */
+    public function testAssertStockAvailableDoesNotThrow(): void
+    {
+        $product = ProductMother::create(null, null, null, 10);
+        $product->assertStockAvailable(5);
+    }
+
+    public function testAssertStockAvailableThrowsProductOutOfStock(): void
+    {
+        $product = ProductMother::create(null, null, null, 3);
+        $this->expectException(ProductOutOfStock::class);
+        $product->assertStockAvailable(5);
     }
 }
