@@ -51,6 +51,8 @@ final readonly class CreateOrder
     {
         $orderId = new OrderId($this->uuidValidator, $request->orderId());
 
+        $wallet = $this->walletRepository->findById(new WalletId($this->uuidValidator, $request->walletId()));
+
         $productIdsQuantity = [];
         foreach ($request->productIds() as $productId) {
             if (!isset($productIdsQuantity[$productId])) {
@@ -67,23 +69,28 @@ final readonly class CreateOrder
         }
 
         $products = $this->productRepository->getByIds(new ProductIdCollection($productIds));
-        $wallet   = $this->walletRepository->findById(new WalletId($this->uuidValidator, $request->walletId()));
 
-        $wallet->assertEnoughCoinsFor($products, $productIdsQuantity);
-        $this->validateProductStock($products, $productIdsQuantity);
+        $productsToOrder = [];
+        foreach ($request->productIds() as $productId) {
+            $productsToOrder[] = $products->findById(new ProductId($this->uuidValidator, $productId));
+        }
+
+        $productsToOrder = new ProductCollection($productsToOrder);
+        $wallet->assertEnoughCoinsFor($productsToOrder);
+        $this->validateProductStock($productsToOrder, $productIdsQuantity);
 
         /** @var Product $product */
         foreach ($products->items() as $product) {
-            $requested = $productIdsQuantity[$product->id()->value()] ?? 0;
-            $product->subtractQuantity(Quantity::fromInt($requested));
+            $quantityRequest = $productIdsQuantity[$product->id()->value()] ?? 0;
+            $product->subtractQuantity(Quantity::fromInt($quantityRequest));
             $this->productRepository->save($product);
         }
 
-        $totalPrice = $products->totalPrice($productIdsQuantity);
+        $totalPrice = $productsToOrder->totalPrice();
         $wallet->subtractCoins($totalPrice);
         $this->walletRepository->save($wallet);
 
-        $order = new Order($orderId, $products, $wallet);
+        $order = new Order($orderId, $productsToOrder, $wallet);
         $this->orderRepository->save($order);
     }
 

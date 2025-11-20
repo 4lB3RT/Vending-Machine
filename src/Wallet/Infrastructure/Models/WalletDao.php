@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace VendingMachine\Wallet\Infrastructure\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Database\Factories\WalletDaoFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property string $id

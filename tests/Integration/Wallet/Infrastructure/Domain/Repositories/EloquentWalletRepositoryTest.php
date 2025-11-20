@@ -6,14 +6,14 @@ namespace Tests\Integration\Wallet\Infrastructure\Domain\Repositories;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use VendingMachine\Wallet\Infrastructure\Models\WalletDao;
-use VendingMachine\Wallet\Infrastructure\Domain\Repositories\EloquentWalletRepository;
-use VendingMachine\Wallet\Domain\ValueObjects\WalletId;
-use VendingMachine\Wallet\Domain\ValueObjects\Name;
-use VendingMachine\Wallet\Domain\ValueObjects\WalletCoins;
+use Tests\Unit\Shared\Domain\Validators\TestUuidValue;
 use VendingMachine\Wallet\Domain\Entities\Wallet;
 use VendingMachine\Wallet\Domain\Errors\WalletNotFound;
-use Tests\Unit\Shared\Domain\Validators\TestUuidValue;
+use VendingMachine\Wallet\Domain\ValueObjects\Name;
+use VendingMachine\Wallet\Domain\ValueObjects\WalletCoins;
+use VendingMachine\Wallet\Domain\ValueObjects\WalletId;
+use VendingMachine\Wallet\Infrastructure\Domain\Repositories\EloquentWalletRepository;
+use VendingMachine\Wallet\Infrastructure\Models\WalletDao;
 
 class EloquentWalletRepositoryTest extends TestCase
 {
@@ -28,7 +28,7 @@ class EloquentWalletRepositoryTest extends TestCase
             'coins' => 100.0,
         ]);
         $repository = new EloquentWalletRepository();
-        $wallet = $repository->findById(new WalletId(new TestUuidValue(), '123e4567-e89b-12d3-a456-426614174000'));
+        $wallet     = $repository->findById(new WalletId(new TestUuidValue(), '123e4567-e89b-12d3-a456-426614174000'));
 
         $this->assertEquals('123e4567-e89b-12d3-a456-426614174000', $wallet->id()->value());
         $this->assertEquals('TestWallet', $wallet->name()->value());
@@ -52,7 +52,7 @@ class EloquentWalletRepositoryTest extends TestCase
         $wallet     = new Wallet($walletId, Name::fromString('NewWallet'), WalletCoins::fromFloat(50.0));
         $repository->save($wallet);
         $wallet = $repository->findById($walletId);
-        $this->assertNotNull($wallet);
+
         $this->assertEquals('NewWallet', $wallet->name()->value());
         $this->assertEquals(50.0, $wallet->coins()->value());
     }
@@ -67,7 +67,7 @@ class EloquentWalletRepositoryTest extends TestCase
         ]);
 
         $repository = new EloquentWalletRepository();
-        $wallets = WalletDao::all();
+        $wallets    = WalletDao::all();
 
         $this->assertCount(1, $wallets);
         $wallet = $wallets->first();

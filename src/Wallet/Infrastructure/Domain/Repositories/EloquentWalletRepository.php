@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 namespace VendingMachine\Wallet\Infrastructure\Domain\Repositories;
 
-use VendingMachine\Wallet\Domain\Repositories\WalletRepository;
+use VendingMachine\Shared\Domain\Errors\CoinsCannotBeNegative;
 use VendingMachine\Wallet\Domain\Entities\Wallet;
-use VendingMachine\Wallet\Domain\ValueObjects\WalletId;
+use VendingMachine\Wallet\Domain\Errors\WalletNotFound;
+use VendingMachine\Wallet\Domain\Repositories\WalletRepository;
 use VendingMachine\Wallet\Domain\ValueObjects\Name;
 use VendingMachine\Wallet\Domain\ValueObjects\WalletCoins;
-use VendingMachine\Wallet\Domain\Errors\WalletNotFound;
-use VendingMachine\Shared\Domain\Errors\CoinsCannotBeNegative;
+use VendingMachine\Wallet\Domain\ValueObjects\WalletId;
 use VendingMachine\Wallet\Infrastructure\Models\WalletDao;
 
 final class EloquentWalletRepository implements WalletRepository
