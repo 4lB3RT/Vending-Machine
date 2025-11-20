@@ -5,17 +5,18 @@ declare(strict_types = 1);
 namespace VendingMachine\Product\Domain\Entities;
 
 use VendingMachine\Product\Domain\Errors\ProductOutOfStock;
+use VendingMachine\Product\Domain\Errors\QuantityCannotBeNegative;
 use VendingMachine\Product\Domain\ValueObjects\Name;
 use VendingMachine\Product\Domain\ValueObjects\Price;
 use VendingMachine\Product\Domain\ValueObjects\ProductId;
 use VendingMachine\Product\Domain\ValueObjects\Quantity;
 
-final readonly class Product
+final class Product
 {
     public function __construct(
-        private ProductId $id,
-        private Name      $name,
-        private Price     $price,
+        private readonly ProductId $id,
+        private readonly Name      $name,
+        private readonly Price     $price,
         private Quantity  $quantity,
     ) {
     }
@@ -60,5 +61,12 @@ final readonly class Product
     public function id(): ProductId
     {
         return $this->id;
+    }
+
+    /* @throws QuantityCannotBeNegative */
+    public function subtractQuantity(Quantity $amount): void
+    {
+        $newQuantity = $this->quantity->value() - $amount->value();
+        $this->quantity = Quantity::fromInt($newQuantity);
     }
 }
