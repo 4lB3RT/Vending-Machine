@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace VendingMachine\Product\Infrastructure\Domain\Repositories;
 
+use Exception;
 use VendingMachine\Product\Domain\Collections\ProductCollection;
 use VendingMachine\Product\Domain\Collections\ProductIdCollection;
 use VendingMachine\Product\Domain\Entities\Product;
@@ -87,7 +88,7 @@ final readonly class EloquentProductRepository implements ProductRepository
     {
         $productDao = ProductDao::find($id->value());
         if (!$productDao) {
-            throw new \Exception("Product not found: {$id->value()}");
+            throw new Exception("Product not found: {$id->value()}");
         }
 
         return new Product(
@@ -95,6 +96,18 @@ final readonly class EloquentProductRepository implements ProductRepository
             Name::fromString($productDao->name),
             Price::fromFloat($productDao->price),
             Quantity::fromInt($productDao->quantity)
+        );
+    }
+
+    public function save(Product $product): void
+    {
+        ProductDao::query()->updateOrCreate(
+            ['id' => $product->id()->value()],
+            [
+                'name'     => $product->name()->value(),
+                'price'    => $product->price()->value(),
+                'quantity' => $product->quantity()->value(),
+            ]
         );
     }
 }
