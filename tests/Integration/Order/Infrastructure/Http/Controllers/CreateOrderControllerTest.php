@@ -29,7 +29,7 @@ class CreateOrderControllerTest extends TestCase
         ];
         $this->postJson('/api/wallets/' . $walletId, $walletPayload)->assertStatus(200);
         $payload = [
-            'productIds' => [$productId],
+            'productIds' => [$productId, $productId, $productId],
             'walletId'   => $walletId,
         ];
         $response = $this->postJson('/api/orders/' . $orderId, $payload);
@@ -38,6 +38,9 @@ class CreateOrderControllerTest extends TestCase
         $createdOrder = json_decode(Redis::command('get', ['order:' . $orderId]), true);
         $this->assertEquals($orderId, $createdOrder['id']);
         $this->assertEquals($walletId, $createdOrder['wallet']['id']);
+
+        $updatedProduct = ProductDao::find($productId);
+        $this->assertEquals(7, $updatedProduct->quantity);
     }
 
     public function testShouldReturnWalletNotFoundError()

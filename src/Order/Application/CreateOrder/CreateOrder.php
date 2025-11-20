@@ -16,6 +16,7 @@ use VendingMachine\Product\Domain\Errors\ProductsNotFound;
 use VendingMachine\Product\Domain\Errors\QuantityCannotBeNegative;
 use VendingMachine\Product\Domain\Repositories\ProductRepository;
 use VendingMachine\Product\Domain\ValueObjects\ProductId;
+use VendingMachine\Product\Domain\ValueObjects\Quantity;
 use VendingMachine\Shared\Domain\Errors\CoinsCannotBeNegative;
 use VendingMachine\Shared\Domain\Errors\InvalidCollectionType;
 use VendingMachine\Shared\Domain\Errors\InvalidUuid;
@@ -70,6 +71,13 @@ final readonly class CreateOrder
 
         $wallet->assertEnoughCoinsFor($products, $productIdsQuantity);
         $this->validateProductStock($products, $productIdsQuantity);
+
+        /** @var Product $product */
+        foreach ($products->items() as $product) {
+            $requested = $productIdsQuantity[$product->id()->value()] ?? 0;
+            $product->subtractQuantity(Quantity::fromInt($requested));
+            $this->productRepository->save($product);
+        }
 
         $totalPrice = $products->totalPrice($productIdsQuantity);
         $wallet->subtractCoins($totalPrice);
