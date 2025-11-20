@@ -71,9 +71,7 @@ final class WalletTest extends TestCase
         $wallet->assertEnoughCoinsFor($products, $productQuantity);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[\PHPUnit\Framework\Attributes\DoesNotPerformAssertions]
     public function testAssertEnoughCoinsForDoesNotThrow(): void
     {
         $walletId = WalletIdMother::create();
