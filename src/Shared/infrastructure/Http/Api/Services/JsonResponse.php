@@ -33,7 +33,7 @@ final class JsonResponse
             $e instanceof BadRequest     => ApiErrors::badRequest($e),
             $e instanceof Unauthorized   => ApiErrors::unauthorized($e),
             $e instanceof Forbidden      => ApiErrors::forbidden($e),
-            $e instanceof EntityNotFound => ApiErrors::EntityNotFound($e),
+            $e instanceof EntityNotFound => ApiErrors::entityNotFound($e),
             default                      => ApiErrors::internalServer($e),
         };
 
