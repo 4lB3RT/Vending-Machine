@@ -13,7 +13,8 @@ use VendingMachine\Wallet\Infrastructure\Domain\Repositories\InMemoryWalletRepos
 
 final class CreateWalletTest extends TestCase
 {
-    private InMemoryWalletRepository $walletRepository;
+    private InMemoryWalletRepository $backupWalletRepository;
+    private InMemoryWalletRepository $dynamicWalletRepository;
     private CreateWallet $sut;
 
     public function testCreateWalletSuccessfully(): void
@@ -22,15 +23,21 @@ final class CreateWalletTest extends TestCase
         $request  = new CreateWalletRequest($walletId->value(), 'NewName', 10);
         $this->sut->execute($request);
 
-        $created = $this->walletRepository->findById($walletId);
-        $this->assertEquals('NewName', $created->name()->value());
-        $this->assertEquals(10, $created->coins()->value());
+        $createdDynamic = $this->dynamicWalletRepository->findById($walletId);
+        $createdBackup = $this->backupWalletRepository->findById($walletId);
+
+        $this->assertEquals('NewName', $createdDynamic->name()->value());
+        $this->assertEquals(10, $createdDynamic->coins()->value());
+
+        $this->assertEquals('NewName', $createdBackup->name()->value());
+        $this->assertEquals(10, $createdBackup->coins()->value());
     }
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->walletRepository = new InMemoryWalletRepository();
-        $this->sut              = new CreateWallet(new TestUuidValue(), $this->walletRepository);
+        $this->backupWalletRepository = new InMemoryWalletRepository();
+        $this->dynamicWalletRepository = new InMemoryWalletRepository();
+        $this->sut              = new CreateWallet(new TestUuidValue(), $this->backupWalletRepository, $this->dynamicWalletRepository);
     }
 }

@@ -15,6 +15,7 @@ final readonly class CreateWallet
 {
     public function __construct(
         private UuidValue $uuidValidator,
+        private WalletRepository $eloquentWalletRepository,
         private WalletRepository $walletRepository
     ) {
     }
@@ -27,6 +28,8 @@ final readonly class CreateWallet
             Name::fromString($request->name()),
             WalletCoins::fromFloat($request->coins())
         );
+
         $this->walletRepository->save($wallet);
+        $this->eloquentWalletRepository->save($wallet);
     }
 }
