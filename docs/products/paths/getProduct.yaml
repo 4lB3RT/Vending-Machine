@@ -1,0 +1,34 @@
+get:
+  summary: Obtener un producto por ID
+  tags:
+    - Products
+  operationId: getProduct
+  parameters:
+    - name: productId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: ID del producto a obtener
+  responses:
+    '200':
+      description: Producto obtenido correctamente
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/getProduct.yaml#/GetProductResponse'
+          examples:
+            success:
+              value:
+                id: "123e4567-e89b-12d3-a456-426614174000"
+                name: "CocaCola"
+                price: 1.5
+                quantity: 10
+    '400':
+      $ref: '../../shared/response/400.yml'
+    '404':
+      $ref: '../../shared/response/404.yml'
+    '500':
+      $ref: '../../shared/response/500.yml'
+
