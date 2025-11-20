@@ -41,9 +41,7 @@ final class ProductTest extends TestCase
         $this->assertEquals($expected, $product->toArray());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     * */
+    #[\PHPUnit\Framework\Attributes\DoesNotPerformAssertions]
     public function testAssertStockAvailableDoesNotThrow(): void
     {
         $product = ProductMother::create(null, null, null, 10);
