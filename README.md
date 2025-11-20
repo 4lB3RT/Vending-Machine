@@ -73,19 +73,47 @@ Each product has a selector, price, and available quantity.
 
 ---
 
-## 🚀 How to Run
 
-### Using Docker Compose
-```
-docker compose build --no-cache
-docker compose up -d
-```
+# Vending Machine API Instructions
 
-### Laravel setUp
-```
-./docker/commands/composer install
-./docker/commands/artisan migrate
-```
+1. Go to the `docker` folder:
+   ```sh
+   cd docker
+   ```
+2. Build the containers (no cache):
+   ```sh
+   docker compose build --no-cache
+   ```
+3. Start the containers in detached mode:
+   ```sh
+   docker compose up -d
+   ```
+4. Laravel setUp:
+   ```sh
+   ./docker/commands/composer.sh install
+   ./docker/commands/artisan.sh migrate
+   ```
+
+## Testing
+
+- To run integration tests:
+  ```sh
+  ./docker/commands/test-integration.sh
+  ```
+- To run unit tests:
+  ```sh
+  ./docker/commands/composer.sh test:unit
+  ```
+- To run PHPStan static analysis:
+  ```sh
+  ./docker/commands/composer.sh phpstan
+  ```
+- To run PHP CS Fixer (code style):
+  ```sh
+  ./docker/commands/composer.sh cs-fix
+  ```
+
+The API and all dependencies will be available and ready for use.
 
 ---
 
@@ -93,3 +121,4 @@ docker compose up -d
 - PHP >= 8.0
 - Composer
 - Docker (optional)
+
