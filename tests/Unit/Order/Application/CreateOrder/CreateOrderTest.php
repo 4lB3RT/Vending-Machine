@@ -124,6 +124,33 @@ final class CreateOrderTest extends TestCase
         $this->sut->execute($request);
     }
 
+    public function testCreateOrderSubtractsProductQuantity(): void
+    {
+        $orderId   = '123e4567-e89b-12d3-a456-426614174555';
+        $productId = ProductIdMother::create('123e4567-e89b-12d3-a456-426614174556')->value();
+        $product   = ProductMother::create($productId, 'TestProduct', 10, 5);
+        $this->productRepository->add($product);
+        $walletId = '123e4567-e89b-12d3-a456-426614174557';
+        $wallet   = new Wallet(new WalletId(new TestUuidValue(), $walletId), Name::fromString('TestWallet'), WalletCoins::fromFloat(100));
+        $this->walletRepository->save($wallet);
+        $request = new CreateOrderRequest(
+            $orderId,
+            [$productId, $productId, $productId], // compra 3 unidades
+            $walletId,
+        );
+
+        $this->sut->execute($request);
+        $created = $this->orderRepository->findById(new OrderId(new TestUuidValue(), $orderId));
+        $this->assertInstanceOf(Order::class, $created);
+        $this->assertEquals($orderId, $created->id()->value());
+        $this->assertEquals($walletId, $created->wallet()->id()->value());
+        $this->assertCount(1, $created->products()->items());
+        $this->assertEquals('TestProduct', $created->products()->items()[0]->name()->value());
+
+        $updatedProduct = $this->productRepository->findById(ProductIdMother::create($productId));
+        $this->assertEquals(2, $updatedProduct->quantity()->value());
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
