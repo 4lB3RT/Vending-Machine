@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace VendingMachine\Wallet\Domain\Error;
+namespace VendingMachine\Wallet\Domain\Errors;
 
 use VendingMachine\Shared\Domain\Errors\Essentials\EntityNotFound;
 
