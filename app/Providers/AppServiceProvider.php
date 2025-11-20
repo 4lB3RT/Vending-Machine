@@ -9,7 +9,9 @@ use VendingMachine\Product\Domain\Repositories\ProductRepository;
 use VendingMachine\Product\Infrastructure\Domain\Repositories\EloquentProductRepository;
 use VendingMachine\Shared\Domain\Validators\UuidValue;
 use VendingMachine\Shared\infrastructure\Domain\Validators\RamseyUuidValue;
+use VendingMachine\Wallet\Application\CreateWallet\CreateWallet;
 use VendingMachine\Wallet\Domain\Repositories\WalletRepository;
+use VendingMachine\Wallet\Infrastructure\Domain\Repositories\EloquentWalletRepository;
 use VendingMachine\Wallet\Infrastructure\Domain\Repositories\RedisWalletRepository;
 
 class AppServiceProvider extends ServiceProvider
@@ -37,6 +39,15 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             OrderRepository::class,
             RedisOrderRepository::class
+        );
+
+
+        $this->app->bind(CreateWallet::class,
+            concrete: fn(): CreateWallet => new CreateWallet(
+                uuidValidator: $this->app->make(UuidValue::class),
+                eloquentWalletRepository: $this->app->make(EloquentWalletRepository::class),
+                walletRepository: $this->app->make(RedisWalletRepository::class)
+            )
         );
     }
 
