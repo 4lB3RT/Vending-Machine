@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace VendingMachine\Wallet\Domain\Errors;
 
-use Exception;
+use VendingMachine\Shared\Domain\Errors\Essentials\BadRequest;
 
-final class NotEnoughCoins extends Exception
+final class NotEnoughCoins extends BadRequest
 {
     public static function create(float $total, float $coins): self
     {
