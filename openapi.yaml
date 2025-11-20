@@ -8,6 +8,8 @@ servers:
 paths:
   /products:
     $ref: './docs/products/paths/getProducts.yaml'
+  /products/{productId}:
+    $ref: './docs/products/paths/getProduct.yaml'
   /wallets/{id}:
     get:
       $ref: './docs/wallet/paths/getWallet.yaml'
