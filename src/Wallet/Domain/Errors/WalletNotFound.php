@@ -8,7 +8,7 @@ use VendingMachine\Shared\Domain\Errors\Essentials\EntityNotFound;
 
 final class WalletNotFound extends EntityNotFound
 {
-    private const MESSAGE = 'Wallet not found: %s';
+    private const string MESSAGE = 'Wallet not found: %s';
 
     public static function create(string $walletId): self
     {
