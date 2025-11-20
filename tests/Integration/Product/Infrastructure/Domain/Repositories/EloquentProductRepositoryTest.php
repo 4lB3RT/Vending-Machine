@@ -5,12 +5,14 @@ declare(strict_types = 1);
 namespace Tests\Integration\Product\Infrastructure\Domain\Repositories;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Tests\Unit\Shared\Domain\Validators\TestUuidValue;
 use VendingMachine\Product\Domain\Collections\ProductIdCollection;
 use VendingMachine\Product\Domain\Entities\Product;
 use VendingMachine\Product\Domain\Errors\ProductsNotFound;
 use VendingMachine\Product\Domain\ValueObjects\ProductId;
+use VendingMachine\Product\Domain\ValueObjects\Quantity;
 use VendingMachine\Product\Infrastructure\Domain\Repositories\EloquentProductRepository;
 use VendingMachine\Product\Infrastructure\Models\ProductDao;
 
@@ -18,7 +20,7 @@ class EloquentProductRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function testShouldReturnsAllProductsFromDatabase()
     {
         $productDaos = ProductDao::factory()->count(3)->create();
@@ -42,7 +44,7 @@ class EloquentProductRepositoryTest extends TestCase
         }
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function testReturnsEmptyCollectionWhenNoProductsExist()
     {
         $repository = new EloquentProductRepository(new TestUuidValue());
@@ -50,7 +52,7 @@ class EloquentProductRepositoryTest extends TestCase
         $this->assertCount(0, $result->items(), 'La colección debe estar vacía si no hay productos en la base de datos.');
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function testReturnsProductWithCorrectValues()
     {
         ProductDao::factory()->create([
@@ -105,6 +107,25 @@ class EloquentProductRepositoryTest extends TestCase
         $result     = $repository->get();
 
         $this->assertCount(5, $result->items());
+    }
+
+    public function testSaveUpdatesProductInDatabase()
+    {
+        $productDao = ProductDao::factory()->create([
+            'id'       => '123e4567-e89b-12d3-a456-426614174000',
+            'name'     => 'CocaCola',
+            'price'    => 1.50,
+            'quantity' => 10,
+        ]);
+
+        $repository = new EloquentProductRepository(new TestUuidValue());
+        $product = $repository->findById(new ProductId(new TestUuidValue(), $productDao->id));
+
+        $product->subtractQuantity(new Quantity(3));
+        $repository->save($product);
+
+        $updatedDao = ProductDao::find($productDao->id);
+        $this->assertEquals(7, $updatedDao->quantity);
     }
 
     protected function setUp(): void
