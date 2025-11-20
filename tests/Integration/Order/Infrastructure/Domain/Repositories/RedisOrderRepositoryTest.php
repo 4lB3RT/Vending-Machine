@@ -12,7 +12,7 @@ use Tests\Unit\Shared\Domain\Validators\TestUuidValue;
 use VendingMachine\Order\Domain\Entities\Order;
 use VendingMachine\Order\Domain\Errors\OrderNotFound;
 use VendingMachine\Order\Infrastructure\Domain\Repositories\RedisOrderRepository;
-use VendingMachine\Order\ValueObjects\OrderId;
+use VendingMachine\Order\Domain\ValueObjects\OrderId;
 use VendingMachine\Product\Domain\Collections\ProductCollection;
 use VendingMachine\Wallet\Domain\Entities\Wallet;
 use VendingMachine\Wallet\Domain\ValueObjects\Name;

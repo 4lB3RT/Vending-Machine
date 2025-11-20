@@ -8,7 +8,7 @@ use Tests\Unit\Order\Domain\ValueObjects\OrderIdMother;
 use Tests\Unit\Product\Domain\Entities\ProductMother;
 use Tests\Unit\Wallet\Domain\Entities\WalletMother;
 use VendingMachine\Order\Domain\Entities\Order;
-use VendingMachine\Order\ValueObjects\OrderId;
+use VendingMachine\Order\Domain\ValueObjects\OrderId;
 use VendingMachine\Product\Domain\Collections\ProductCollection;
 use VendingMachine\Wallet\Domain\Entities\Wallet;
 

@@ -8,7 +8,7 @@ use Illuminate\Redis\Connections\Connection;
 use VendingMachine\Order\Domain\Entities\Order;
 use VendingMachine\Order\Domain\Errors\OrderNotFound;
 use VendingMachine\Order\Domain\Repositories\OrderRepository;
-use VendingMachine\Order\ValueObjects\OrderId;
+use VendingMachine\Order\Domain\ValueObjects\OrderId;
 use VendingMachine\Product\Domain\Collections\ProductCollection;
 use VendingMachine\Product\Domain\Entities\Product;
 use VendingMachine\Product\Domain\Errors\PriceCannotBeNegative;

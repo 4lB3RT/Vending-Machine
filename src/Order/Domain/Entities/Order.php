@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace VendingMachine\Order\Domain\Entities;
 
-use VendingMachine\Order\ValueObjects\OrderId;
+use VendingMachine\Order\Domain\ValueObjects\OrderId;
 use VendingMachine\Product\Domain\Collections\ProductCollection;
 use VendingMachine\Product\Domain\Entities\Product;
 use VendingMachine\Wallet\Domain\Entities\Wallet;

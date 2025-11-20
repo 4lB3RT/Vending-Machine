@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace VendingMachine\Order\Domain\Repositories;
 
 use VendingMachine\Order\Domain\Entities\Order;
-use VendingMachine\Order\ValueObjects\OrderId;
+use VendingMachine\Order\Domain\ValueObjects\OrderId;
 
 interface OrderRepository
 {
