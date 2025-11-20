@@ -1,0 +1,90 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace VendingMachine\Order\Application\CreateOrder;
+
+use VendingMachine\Order\Domain\Entities\Order;
+use VendingMachine\Order\Domain\Repositories\OrderRepository;
+use VendingMachine\Order\ValueObjects\OrderId;
+use VendingMachine\Product\Domain\Collections\ProductCollection;
+use VendingMachine\Product\Domain\Collections\ProductIdCollection;
+use VendingMachine\Product\Domain\Entities\Product;
+use VendingMachine\Product\Domain\Errors\PriceCannotBeNegative;
+use VendingMachine\Product\Domain\Errors\ProductOutOfStock;
+use VendingMachine\Product\Domain\Errors\ProductsNotFound;
+use VendingMachine\Product\Domain\Errors\QuantityCannotBeNegative;
+use VendingMachine\Product\Domain\Repositories\ProductRepository;
+use VendingMachine\Product\Domain\ValueObjects\ProductId;
+use VendingMachine\Shared\Domain\Errors\CoinsCannotBeNegative;
+use VendingMachine\Shared\Domain\Errors\InvalidCollectionType;
+use VendingMachine\Shared\Domain\Errors\InvalidUuid;
+use VendingMachine\Shared\Domain\Validators\UuidValue;
+use VendingMachine\Wallet\Domain\Errors\NotEnoughCoins;
+use VendingMachine\Wallet\Domain\Errors\WalletNotFound;
+use VendingMachine\Wallet\Domain\Repositories\WalletRepository;
+use VendingMachine\Wallet\Domain\ValueObjects\WalletId;
+
+final readonly class CreateOrder
+{
+    public function __construct(
+        private UuidValue $uuidValidator,
+        private OrderRepository $orderRepository,
+        private ProductRepository $productRepository,
+        private WalletRepository $walletRepository
+    ) {
+    }
+
+    /**
+     * @throws CoinsCannotBeNegative
+     * @throws InvalidCollectionType
+     * @throws InvalidUuid
+     * @throws NotEnoughCoins
+     * @throws PriceCannotBeNegative
+     * @throws ProductOutOfStock
+     * @throws QuantityCannotBeNegative
+     * @throws WalletNotFound
+     * @throws ProductsNotFound
+     */
+    public function execute(CreateOrderRequest $request): void
+    {
+        $orderId = new OrderId($this->uuidValidator, $request->orderId());
+
+        $productIdsQuantity = [];
+        foreach ($request->productIds() as $productId) {
+            if (!isset($productIdsQuantity[$productId])) {
+                $productIdsQuantity[$productId] = 1;
+            } else {
+                $productIdsQuantity[$productId]++;
+            }
+        }
+
+        $productIds      = [];
+        $productIdsValue = array_unique($request->productIds());
+        foreach ($productIdsValue as $productIdValue) {
+            $productIds[] = new ProductId($this->uuidValidator, $productIdValue);
+        }
+
+        $products = $this->productRepository->getByIds(new ProductIdCollection($productIds));
+        $wallet   = $this->walletRepository->findById(new WalletId($this->uuidValidator, $request->walletId()));
+
+        $wallet->assertEnoughCoinsFor($products, $productIdsQuantity);
+        $this->validateProductStock($products, $productIdsQuantity);
+
+        $totalPrice = $products->totalPrice($productIdsQuantity);
+        $wallet->subtractCoins($totalPrice);
+        $this->walletRepository->save($wallet);
+
+        $order = new Order($orderId, $products, $wallet);
+        $this->orderRepository->save($order);
+    }
+
+    /* @throws ProductOutOfStock */
+    private function validateProductStock(ProductCollection $products, array $productQuantity): void
+    {
+        /** @var Product $product */
+        foreach ($products->items() as $product) {
+            $product->assertStockAvailable($productQuantity[$product->id()->value()]);
+        }
+    }
+}
