@@ -66,7 +66,7 @@ final class Product
     /* @throws QuantityCannotBeNegative */
     public function subtractQuantity(Quantity $amount): void
     {
-        $newQuantity = $this->quantity->value() - $amount->value();
+        $newQuantity    = $this->quantity->value() - $amount->value();
         $this->quantity = Quantity::fromInt($newQuantity);
     }
 }

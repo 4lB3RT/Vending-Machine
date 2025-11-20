@@ -11,8 +11,8 @@ use Tests\Unit\Shared\Domain\Validators\TestUuidValue;
 use VendingMachine\Order\Application\CreateOrder\CreateOrder;
 use VendingMachine\Order\Application\CreateOrder\CreateOrderRequest;
 use VendingMachine\Order\Domain\Entities\Order;
-use VendingMachine\Order\Infrastructure\Domain\Repositories\InMemoryOrderRepository;
 use VendingMachine\Order\Domain\ValueObjects\OrderId;
+use VendingMachine\Order\Infrastructure\Domain\Repositories\InMemoryOrderRepository;
 use VendingMachine\Product\Domain\Errors\ProductOutOfStock;
 use VendingMachine\Product\Domain\Errors\ProductsNotFound;
 use VendingMachine\Product\Infrastructure\Domain\Repositories\InMemoryProductRepository;
@@ -129,13 +129,15 @@ final class CreateOrderTest extends TestCase
         $orderId   = '123e4567-e89b-12d3-a456-426614174555';
         $productId = ProductIdMother::create('123e4567-e89b-12d3-a456-426614174556')->value();
         $product   = ProductMother::create($productId, 'TestProduct', 10, 5);
-        $this->productRepository->add($product);
+
+        $this->productRepository->save($product);
+
         $walletId = '123e4567-e89b-12d3-a456-426614174557';
         $wallet   = new Wallet(new WalletId(new TestUuidValue(), $walletId), Name::fromString('TestWallet'), WalletCoins::fromFloat(100));
         $this->walletRepository->save($wallet);
         $request = new CreateOrderRequest(
             $orderId,
-            [$productId, $productId, $productId], // compra 3 unidades
+            [$productId, $productId, $productId],
             $walletId,
         );
 
@@ -144,7 +146,7 @@ final class CreateOrderTest extends TestCase
         $this->assertInstanceOf(Order::class, $created);
         $this->assertEquals($orderId, $created->id()->value());
         $this->assertEquals($walletId, $created->wallet()->id()->value());
-        $this->assertCount(1, $created->products()->items());
+        $this->assertCount(3, $created->products()->items());
         $this->assertEquals('TestProduct', $created->products()->items()[0]->name()->value());
 
         $updatedProduct = $this->productRepository->findById(ProductIdMother::create($productId));

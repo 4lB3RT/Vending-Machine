@@ -52,12 +52,12 @@ final class Wallet
     }
 
     /* @throws NotEnoughCoins */
-    public function assertEnoughCoinsFor(ProductCollection $products, array $productQuantity): void
+    public function assertEnoughCoinsFor(ProductCollection $products): void
     {
         $totalPrice = 0;
         /** @var Product $product */
         foreach ($products->items() as $product) {
-            $totalPrice += $product->price()->value() * $productQuantity[$product->id()->value()];
+            $totalPrice += $product->price()->value();
         }
 
         if ($totalPrice > $this->coins->value()) {

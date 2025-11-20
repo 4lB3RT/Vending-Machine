@@ -119,7 +119,7 @@ class EloquentProductRepositoryTest extends TestCase
         ]);
 
         $repository = new EloquentProductRepository(new TestUuidValue());
-        $product = $repository->findById(new ProductId(new TestUuidValue(), $productDao->id));
+        $product    = $repository->findById(new ProductId(new TestUuidValue(), $productDao->id));
 
         $product->subtractQuantity(new Quantity(3));
         $repository->save($product);

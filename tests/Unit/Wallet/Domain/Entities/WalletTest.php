@@ -68,7 +68,7 @@ final class WalletTest extends TestCase
         $productQuantity = ['123e4567-e89b-12d3-a456-426614174000' => 1];
 
         $this->expectException(NotEnoughCoins::class);
-        $wallet->assertEnoughCoinsFor($products, $productQuantity);
+        $wallet->assertEnoughCoinsFor($products);
     }
 
     #[\PHPUnit\Framework\Attributes\DoesNotPerformAssertions]
@@ -89,7 +89,7 @@ final class WalletTest extends TestCase
         $products        = new ProductCollection([$product]);
         $productQuantity = ['123e4567-e89b-12d3-a456-426614174000' => 1];
 
-        $wallet->assertEnoughCoinsFor($products, $productQuantity);
+        $wallet->assertEnoughCoinsFor($products);
     }
 
     public function testSubtractCoinsThrowsNotEnoughCoins(): void

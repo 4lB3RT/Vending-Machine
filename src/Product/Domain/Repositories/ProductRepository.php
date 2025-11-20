@@ -39,4 +39,6 @@ interface ProductRepository
      * @throws ProductsNotFound
      */
     public function getByIds(ProductIdCollection $productIds): ProductCollection;
+
+    public function save(Product $product): void;
 }

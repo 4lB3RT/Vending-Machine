@@ -24,7 +24,7 @@ final class CreateWalletTest extends TestCase
         $this->sut->execute($request);
 
         $createdDynamic = $this->dynamicWalletRepository->findById($walletId);
-        $createdBackup = $this->backupWalletRepository->findById($walletId);
+        $createdBackup  = $this->backupWalletRepository->findById($walletId);
 
         $this->assertEquals('NewName', $createdDynamic->name()->value());
         $this->assertEquals(10, $createdDynamic->coins()->value());
@@ -36,8 +36,8 @@ final class CreateWalletTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->backupWalletRepository = new InMemoryWalletRepository();
+        $this->backupWalletRepository  = new InMemoryWalletRepository();
         $this->dynamicWalletRepository = new InMemoryWalletRepository();
-        $this->sut              = new CreateWallet(new TestUuidValue(), $this->backupWalletRepository, $this->dynamicWalletRepository);
+        $this->sut                     = new CreateWallet(new TestUuidValue(), $this->backupWalletRepository, $this->dynamicWalletRepository);
     }
 }
