@@ -9,7 +9,7 @@ use Illuminate\Redis\RedisManager;
 use Tests\TestCase;
 use Tests\Unit\Shared\Domain\Validators\TestUuidValue;
 use VendingMachine\Wallet\Domain\Entities\Wallet;
-use VendingMachine\Wallet\Domain\Error\WalletNotFound;
+use VendingMachine\Wallet\Domain\Errors\WalletNotFound;
 use VendingMachine\Wallet\Domain\ValueObjects\Name;
 use VendingMachine\Wallet\Domain\ValueObjects\WalletCoins;
 use VendingMachine\Wallet\Domain\ValueObjects\WalletId;

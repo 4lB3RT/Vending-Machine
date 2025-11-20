@@ -10,7 +10,7 @@ use VendingMachine\Shared\Domain\Errors\InvalidUuid;
 use VendingMachine\Shared\infrastructure\Http\Api\Services\JsonResponse;
 use VendingMachine\Wallet\Application\UpdateWallet\UpdateWallet;
 use VendingMachine\Wallet\Application\UpdateWallet\UpdateWalletRequest;
-use VendingMachine\Wallet\Domain\Error\WalletNotFound;
+use VendingMachine\Wallet\Domain\Errors\WalletNotFound;
 
 final readonly class UpdateWalletController
 {

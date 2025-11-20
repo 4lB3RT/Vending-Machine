@@ -12,7 +12,7 @@ use Tests\Unit\Wallet\Domain\ValueObjects\WalletIdMother;
 use VendingMachine\Wallet\Application\UpdateWallet\UpdateWallet;
 use VendingMachine\Wallet\Application\UpdateWallet\UpdateWalletRequest;
 use VendingMachine\Wallet\Domain\Entities\Wallet;
-use VendingMachine\Wallet\Domain\Error\WalletNotFound;
+use VendingMachine\Wallet\Domain\Errors\WalletNotFound;
 use VendingMachine\Wallet\Infrastructure\Domain\Repositories\InMemoryWalletRepository;
 
 final class UpdateWalletTest extends TestCase

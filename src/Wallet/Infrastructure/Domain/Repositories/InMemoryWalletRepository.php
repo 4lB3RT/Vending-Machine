@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace VendingMachine\Wallet\Infrastructure\Domain\Repositories;
 
 use VendingMachine\Wallet\Domain\Entities\Wallet;
-use VendingMachine\Wallet\Domain\Error\WalletNotFound;
+use VendingMachine\Wallet\Domain\Errors\WalletNotFound;
 use VendingMachine\Wallet\Domain\Repositories\WalletRepository;
 use VendingMachine\Wallet\Domain\ValueObjects\WalletId;
 

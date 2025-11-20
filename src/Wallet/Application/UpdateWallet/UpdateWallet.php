@@ -7,7 +7,7 @@ namespace VendingMachine\Wallet\Application\UpdateWallet;
 use VendingMachine\Shared\Domain\Errors\CoinsCannotBeNegative;
 use VendingMachine\Shared\Domain\Errors\InvalidUuid;
 use VendingMachine\Shared\Domain\Validators\UuidValue;
-use VendingMachine\Wallet\Domain\Error\WalletNotFound;
+use VendingMachine\Wallet\Domain\Errors\WalletNotFound;
 use VendingMachine\Wallet\Domain\Repositories\WalletRepository;
 use VendingMachine\Wallet\Domain\ValueObjects\Name;
 use VendingMachine\Wallet\Domain\ValueObjects\WalletCoins;
