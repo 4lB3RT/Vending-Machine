@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace VendingMachine\Product\Infrastructure\Domain\Repositories;
 
 use VendingMachine\Product\Domain\Collections\ProductCollection;
+use VendingMachine\Product\Domain\Collections\ProductIdCollection;
 use VendingMachine\Product\Domain\Entities\Product;
 use VendingMachine\Product\Domain\Errors\PriceCannotBeNegative;
+use VendingMachine\Product\Domain\Errors\ProductsNotFound;
 use VendingMachine\Product\Domain\Errors\QuantityCannotBeNegative;
 use VendingMachine\Product\Domain\Repositories\ProductRepository;
 use VendingMachine\Product\Domain\ValueObjects\Name;
@@ -22,6 +24,34 @@ final readonly class EloquentProductRepository implements ProductRepository
 {
     public function __construct(private UuidValue $uuidValidator)
     {
+    }
+
+    /**
+     * @throws InvalidCollectionType
+     * @throws PriceCannotBeNegative
+     * @throws InvalidUuid
+     * @throws QuantityCannotBeNegative
+     * @throws ProductsNotFound
+     */
+    public function getByIds(ProductIdCollection $productIds): ProductCollection
+    {
+        $ids         = array_map(fn (ProductId $id) => $id->value(), $productIds->items());
+        $productDaos = ProductDao::whereIn('id', $ids)->get();
+        if ($productDaos->isEmpty()) {
+            throw ProductsNotFound::create($ids);
+        }
+
+        $products = [];
+        foreach ($productDaos as $productDao) {
+            $products[] = new Product(
+                new ProductId($this->uuidValidator, $productDao->id),
+                Name::fromString($productDao->name),
+                Price::fromFloat($productDao->price),
+                Quantity::fromInt($productDao->quantity)
+            );
+        }
+
+        return new ProductCollection($products);
     }
 
     /**
@@ -46,5 +76,25 @@ final readonly class EloquentProductRepository implements ProductRepository
         }
 
         return new ProductCollection($products);
+    }
+
+    /**
+     * @throws PriceCannotBeNegative
+     * @throws InvalidUuid
+     * @throws QuantityCannotBeNegative
+     */
+    public function findById(ProductId $id): Product
+    {
+        $productDao = ProductDao::find($id->value());
+        if (!$productDao) {
+            throw new \Exception("Product not found: {$id->value()}");
+        }
+
+        return new Product(
+            new ProductId($this->uuidValidator, $productDao->id),
+            Name::fromString($productDao->name),
+            Price::fromFloat($productDao->price),
+            Quantity::fromInt($productDao->quantity)
+        );
     }
 }
