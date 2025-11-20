@@ -6,7 +6,7 @@ namespace VendingMachine\Shared\Domain\ValueObjects;
 
 use VendingMachine\Shared\Domain\Errors\CoinsCannotBeNegative;
 
-abstract readonly class Coins
+readonly class Coins
 {
     /* @throws CoinsCannotBeNegative */
     public function __construct(private float $value)
@@ -16,7 +16,11 @@ abstract readonly class Coins
         }
     }
 
-    abstract public static function fromFloat(float $value): self;
+    /* @throws CoinsCannotBeNegative */
+    public static function fromFloat(float $value): self
+    {
+        return new self($value);
+    }
 
     public function value(): float
     {
