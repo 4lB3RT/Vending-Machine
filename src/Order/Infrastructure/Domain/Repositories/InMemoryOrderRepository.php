@@ -7,7 +7,7 @@ namespace VendingMachine\Order\Infrastructure\Domain\Repositories;
 use VendingMachine\Order\Domain\Entities\Order;
 use VendingMachine\Order\Domain\Errors\OrderNotFound;
 use VendingMachine\Order\Domain\Repositories\OrderRepository;
-use VendingMachine\Order\ValueObjects\OrderId;
+use VendingMachine\Order\Domain\ValueObjects\OrderId;
 
 class InMemoryOrderRepository implements OrderRepository
 {

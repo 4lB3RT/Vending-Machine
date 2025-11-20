@@ -12,7 +12,7 @@ use VendingMachine\Order\Application\CreateOrder\CreateOrder;
 use VendingMachine\Order\Application\CreateOrder\CreateOrderRequest;
 use VendingMachine\Order\Domain\Entities\Order;
 use VendingMachine\Order\Infrastructure\Domain\Repositories\InMemoryOrderRepository;
-use VendingMachine\Order\ValueObjects\OrderId;
+use VendingMachine\Order\Domain\ValueObjects\OrderId;
 use VendingMachine\Product\Domain\Errors\ProductOutOfStock;
 use VendingMachine\Product\Domain\Errors\ProductsNotFound;
 use VendingMachine\Product\Infrastructure\Domain\Repositories\InMemoryProductRepository;

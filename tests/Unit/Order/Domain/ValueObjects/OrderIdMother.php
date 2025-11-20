@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Tests\Unit\Order\Domain\ValueObjects;
 
 use Tests\Unit\Shared\Domain\Validators\TestUuidValue;
-use VendingMachine\Order\ValueObjects\OrderId;
+use VendingMachine\Order\Domain\ValueObjects\OrderId;
 
 final class OrderIdMother
 {

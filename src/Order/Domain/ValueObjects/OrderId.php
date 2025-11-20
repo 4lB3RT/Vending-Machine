@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace VendingMachine\Order\ValueObjects;
+namespace VendingMachine\Order\Domain\ValueObjects;
 
 use VendingMachine\Shared\Domain\ValueObjects\Essentials\UuidValue;
 
